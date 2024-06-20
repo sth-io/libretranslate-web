@@ -57,10 +57,10 @@ const poleTheme: ThemeOptions = {
 };
 
 const themeMap = {
-  default: defaultTheme,
-  pole: poleTheme,
   light: lightTheme,
+  dark: defaultTheme,
+  pole: poleTheme,
 };
 
 export const theme = (key: keyof typeof themeMap) =>
-  createTheme(themeMap[key] ?? themeMap.default);
+  createTheme(themeMap[key] ?? themeMap.dark);

@@ -75,9 +75,11 @@ function App() {
     withHistory("source", setSource)(justLangData(prevTarget));
     withHistory("target", setTarget)(justLangData(prevSource));
   };
+  //@ts-expect-error window object
+  const themeOption = window._theme
 
   return (
-    <ThemeProvider theme={theme("pole")}>
+    <ThemeProvider theme={theme(themeOption)}>
       <CssBaseline />
       <Settings
         swapLangs={swapLangs}
