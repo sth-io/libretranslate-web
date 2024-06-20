@@ -23,8 +23,6 @@ export const withHistory =
         history,
       };
 
-      console.log({ newValue });
-
       localStorage.setItem(key, JSON.stringify(newValue));
       return newValue;
     });

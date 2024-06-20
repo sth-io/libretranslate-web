@@ -6,7 +6,7 @@ COPY package*.json ./
 RUN npm install
 COPY . .
 
-RUN API=$API npm run build
+RUN npm run build
 
 FROM --platform=linux/amd64 nginx:alpine
 COPY --from=base /app/dist /usr/share/nginx/html
