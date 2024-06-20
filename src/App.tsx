@@ -1,0 +1,100 @@
+import { useCallback, useEffect, useState } from "react";
+import { CssBaseline, ThemeProvider } from "@mui/material";
+import "./App.css";
+import { useDebounce } from "./useDebounce";
+import { AUTOMATIC, getFromLS, justLangData, withHistory } from "./utils";
+import { Footer } from "./Footer";
+import { Settings } from "./Settings";
+import { API } from "./API";
+import { TransBox } from "./TransBox";
+import { theme } from "./Theme";
+import { Lang, LangChoice } from "./types";
+
+function App() {
+  const [question, setQuestion] = useState(
+    localStorage.getItem("question") ?? ""
+  );
+  const [answer, setAnswer] = useState("");
+  const q = useDebounce(question, 1000) as string;
+  const [languages, setLanguages] = useState<Lang[]>([]);
+  const [source, setSource] = useState(getFromLS("source"));
+  const [target, setTarget] = useState(getFromLS("target"));
+
+  const questionSetter = (q: string) => {
+    localStorage.setItem("question", q);
+    setQuestion(q);
+  };
+
+  const translate = useCallback(
+    (source: LangChoice, target: LangChoice, text: string) => {
+      if (!source || !target) {
+        return;
+      }
+      API()
+        .getTranslation(source, target, text)
+        .then((data) => {
+          setAnswer(data);
+        });
+    },
+    []
+  );
+
+  const getLanguages = useCallback(() => {
+    API()
+      .getLanguages()
+      .then((data) => {
+        setLanguages([...data, AUTOMATIC]);
+        if (!source) {
+          setSource(data[0]);
+        }
+        if (!target) {
+          setTarget(data[0]);
+        }
+      });
+  }, [source, target]);
+
+  useEffect(() => {
+    if (q.length > 1) {
+      translate(source, target, q);
+    }
+  }, [q, source, target, translate]);
+
+  useEffect(() => {
+    if (languages.length < 1) {
+      getLanguages();
+    }
+  }, [languages.length, getLanguages]);
+
+  const swapLangs = (prevSource: LangChoice, prevTarget: LangChoice) => {
+    if (prevSource.code === AUTOMATIC.code) {
+      return;
+    }
+    withHistory("source", setSource)(justLangData(prevTarget));
+    withHistory("target", setTarget)(justLangData(prevSource));
+  };
+
+  return (
+    <ThemeProvider theme={theme("pole")}>
+      <CssBaseline />
+      <Settings
+        swapLangs={swapLangs}
+        languages={languages}
+        source={source}
+        setSource={setSource}
+        target={target}
+        setTarget={setTarget}
+      />
+
+      <TransBox
+        question={question}
+        questionSetter={questionSetter}
+        source={source}
+        languages={languages}
+        answer={answer}
+      />
+      <Footer />
+    </ThemeProvider>
+  );
+}
+
+export default App;
