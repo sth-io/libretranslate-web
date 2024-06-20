@@ -1,18 +1,24 @@
 name: Docker Image CI
-
+ 
 on:
   push:
     branches: [ "main" ]
   pull_request:
     branches: [ "main" ]
-
+ 
 jobs:
-
+ 
   build:
-
+ 
     runs-on: ubuntu-latest
-
+ 
     steps:
     - uses: actions/checkout@v4
     - name: Build the Docker image
-      run: docker build . --file Dockerfile --tag kweg/pole-libretranslate:$(date +%s)
+      run: docker build . --file Dockerfile --tag pole-libretranslate:$(date +%s)
+    - name: Login to Docker Hub
+      run: echo ${{ secrets.DOCKERHUB_TOKEN }} | docker login --username kweg --password-stdin
+    - name: Tag and Push the Docker Image
+      run: |
+        docker tag pole-libretranslate:$(date +%s) kweg/pole-libretranslate:$(date +%s)
+        docker push kweg/pole-libretranslate:$(date +%s)
