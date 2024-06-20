@@ -9,7 +9,7 @@ COPY . .
 RUN API=$API npm run build
 
 FROM --platform=linux/amd64 nginx:alpine
-COPY --from=base /app/build /usr/share/nginx/html
+COPY --from=base /app/dist /usr/share/nginx/html
 COPY ./replace_env.sh /replace_env.sh
 
 RUN chmod +x /replace_env.sh
