@@ -8,13 +8,16 @@ import { Settings } from "./Settings";
 import { API } from "./API";
 import { TransBox } from "./TransBox";
 import { theme } from "./Theme";
-import { Lang, LangChoice } from "./types";
+import { Lang, LangChoice, TranslationResponse } from "./types";
 
 function App() {
   const [question, setQuestion] = useState(
     localStorage.getItem("question") ?? ""
   );
-  const [answer, setAnswer] = useState("");
+  const [answer, setAnswer] = useState<TranslationResponse>({
+    translatedText: "",
+    alternatives: [],
+  });
   const q = useDebounce(question, 1000) as string;
   const [languages, setLanguages] = useState<Lang[]>([]);
   const [source, setSource] = useState(getFromLS("source"));

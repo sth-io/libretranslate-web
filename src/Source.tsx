@@ -1,5 +1,4 @@
 import { Chip } from "@mui/material";
-import React from "react";
 import { Lang, TranslationResponse } from "./types";
 
 export const Source = ({
@@ -9,7 +8,7 @@ export const Source = ({
   languages,
 }: {
   question: string;
-  setQuestion: React.Dispatch<React.SetStateAction<string>>;
+  setQuestion: (q: string) => void;
   answer: TranslationResponse;
   languages: Lang[];
 }) => {

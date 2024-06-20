@@ -3,7 +3,7 @@ import { Source } from "./Source";
 import { Translation } from "./Translation";
 import { useWindowSize } from "./useWindowSize";
 import { AUTOMATIC } from "./utils";
-import { Lang, LangChoice } from "./types";
+import { Lang, LangChoice, TranslationResponse } from "./types";
 
 export const TransBox = ({
   question,
@@ -16,7 +16,7 @@ export const TransBox = ({
   questionSetter: (q: string) => void;
   source: LangChoice;
   languages: Lang[];
-  answer: string;
+  answer: TranslationResponse;
 }) => {
   const [windowWidth] = useWindowSize();
   return (
@@ -28,7 +28,11 @@ export const TransBox = ({
         <Source
           question={question}
           setQuestion={questionSetter}
-          answer={source?.code === AUTOMATIC.code && answer}
+          answer={
+            source?.code === AUTOMATIC.code
+              ? answer
+              : { alternatives: [], translatedText: "" }
+          }
           languages={languages}
         />
       </div>
