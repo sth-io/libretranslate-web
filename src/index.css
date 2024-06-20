@@ -50,6 +50,15 @@ html {
   width: 100%;
 }
 
+p {
+  margin: 5px 0;
+}
+
+.autosize {
+  font-size: 20px;
+  font-family: "merriweatherlight", serif;
+}
+
 textarea {
   font-size: 20px;
   font-family: "merriweatherlight", serif;
@@ -63,6 +72,11 @@ textarea {
   overflow-y: auto;
   word-wrap: break-word;
   position: absolute;
+}
+.translated-text {
+  padding: 20px 0;
+  font-size: 20px;
+  font-family: "merriweatherlight", serif;
 }
 
 textarea:focus {
@@ -109,12 +123,11 @@ textarea:focus {
 }
 
 footer {
-  position: fixed;
-  bottom: 0;
   width: 100%;
   left: 0px;
   font-size: 10px;
   display: flex;
   align-items: center;
   justify-content: center;
+  padding-top: 40px;
 }

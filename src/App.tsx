@@ -76,28 +76,30 @@ function App() {
     withHistory("target", setTarget)(justLangData(prevSource));
   };
   //@ts-expect-error window object
-  const themeOption = window._theme
+  const themeOption = window._theme;
 
   return (
     <ThemeProvider theme={theme(themeOption)}>
       <CssBaseline />
-      <Settings
-        swapLangs={swapLangs}
-        languages={languages}
-        source={source}
-        setSource={setSource}
-        target={target}
-        setTarget={setTarget}
-      />
+      <div className="layout">
+        <Settings
+          swapLangs={swapLangs}
+          languages={languages}
+          source={source}
+          setSource={setSource}
+          target={target}
+          setTarget={setTarget}
+        />
 
-      <TransBox
-        question={question}
-        questionSetter={questionSetter}
-        source={source}
-        languages={languages}
-        answer={answer}
-      />
-      <Footer />
+        <TransBox
+          question={question}
+          questionSetter={questionSetter}
+          source={source}
+          languages={languages}
+          answer={answer}
+        />
+        <Footer />
+      </div>
     </ThemeProvider>
   );
 }

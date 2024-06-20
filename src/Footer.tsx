@@ -1,12 +1,18 @@
-import { Divider, Link, Paper, Stack } from "@mui/material";
+import { Divider, Link, Stack } from "@mui/material";
+import { useWindowSize } from "./useWindowSize";
 
 export const Footer = () => {
+  const [windowWidth] = useWindowSize();
+  const showDivider = windowWidth > 800;
   return (
     <footer>
-      <Paper elevation={0} sx={{padding: '5px 25px'}}>
-        <Stack direction="row" gap={1}>
+      <div style={{ padding: "5px 25px" }}>
+        <Stack
+          direction={windowWidth > 800 ? "row" : "column"}
+          gap={windowWidth > 800 ? 1 : 0}
+        >
           <p>{`made with ❤`}</p>
-          <Divider orientation="vertical" flexItem />
+          {showDivider && <Divider orientation="vertical" flexItem />}
           <p>
             {`frontend by: `}
             <Link
@@ -17,7 +23,7 @@ export const Footer = () => {
               kWeglinski
             </Link>
           </p>
-          <Divider orientation="vertical" flexItem />
+          {showDivider && <Divider orientation="vertical" flexItem />}
           <p>
             {`API by: `}
             <Link
@@ -28,7 +34,7 @@ export const Footer = () => {
               LibreTranslate Contributors
             </Link>{" "}
           </p>
-          <Divider orientation="vertical" flexItem />
+          {showDivider && <Divider orientation="vertical" flexItem />}
           <p>
             {`powered by: `}
             <Link
@@ -40,7 +46,7 @@ export const Footer = () => {
             </Link>
           </p>
         </Stack>
-      </Paper>
+      </div>
     </footer>
   );
 };
