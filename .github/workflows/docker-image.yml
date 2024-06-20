@@ -14,11 +14,15 @@ jobs:
  
     steps:
     - uses: actions/checkout@v4
+      with:
+        fetch-depth: 0 # fetch the full commit history to get a unique SHA for tagging
     - name: Build the Docker image
-      run: docker build . --file Dockerfile --tag pole-libretranslate:$(date +%s)
+      id: build
+      run: |
+        docker build . --file Dockerfile --tag kweg/pole-libretranslate:${{ steps.build.outputs.sha }}
+        echo ::set-output name=sha::$(echo ${{ steps.build.outputs.sha }})
     - name: Login to Docker Hub
       run: echo ${{ secrets.DOCKERHUB_TOKEN }} | docker login --username kweg --password-stdin
     - name: Tag and Push the Docker Image
       run: |
-        docker tag pole-libretranslate:$(date +%s) kweg/pole-libretranslate:$(date +%s)
-        docker push kweg/pole-libretranslate:$(date +%s)
+        docker push kweg/pole-libretranslate:${{ steps.build.outputs.sha }}
